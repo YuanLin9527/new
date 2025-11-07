@@ -84,9 +84,13 @@
 }
 
 + (NSString *)getCarrierName {
+    if (@available(iOS 16.0, *)) {
+        // iOS 16+ CTCarrier 及相关 API 已被废弃且无直接替代，按需求退化处理
+        return @"运营商: 不可用";
+    }
+    
     CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = nil;
-    
     if (@available(iOS 12.0, *)) {
         NSDictionary *carriers = [networkInfo serviceSubscriberCellularProviders];
         if (carriers && carriers.count > 0) {
@@ -96,7 +100,7 @@
         carrier = [networkInfo subscriberCellularProvider];
     }
     
-    NSString *carrierName = [carrier carrierName];
+    NSString *carrierName = carrier.carrierName;
     if (carrierName && carrierName.length > 0) {
         return [NSString stringWithFormat:@"运营商: %@", carrierName];
     } else {

@@ -217,7 +217,7 @@
             return;
         }
         
-            [result appendFormat:@"目标IP: %@\n", ipAddress];
+            [result appendFormat:@"目标IP: %@\n", targetIP];
         [result appendString:@"跳数\t\tIP地址\t\t\t延迟\n"];
         [result appendString:@"--------------------------------------------\n"];
         

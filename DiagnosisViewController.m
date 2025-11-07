@@ -12,7 +12,7 @@
 @property (nonatomic, strong) UITextView *logTextView;
 @property (nonatomic, strong) UIButton *startButton;
 @property (nonatomic, strong) UIButton *closeButton;
-@property (nonatomic, strong) UIButton *copyLogButton;  // 修复：避免copy前缀
+@property (nonatomic, strong) UIButton *logCopyButton;  // 重命名避免 copy 前缀
 @property (nonatomic, assign) BOOL isDiagnosing;
 @end
 
@@ -78,15 +78,15 @@
     [self.closeButton addTarget:self action:@selector(closeDiagnosis) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.closeButton];
     
-    // 复制日志按钮
-    self.copyLogButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.copyLogButton.frame = CGRectMake(48 + buttonWidth * 2, buttonTop, buttonWidth, 44);
-    [self.copyLogButton setTitle:@"复制日志" forState:UIControlStateNormal];
-    self.copyLogButton.backgroundColor = [UIColor colorWithRed:0.1 green:0.46 blue:0.82 alpha:1];
-    [self.copyLogButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.copyLogButton.layer.cornerRadius = 8;
-    [self.copyLogButton addTarget:self action:@selector(copyLog) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.copyLogButton];
+    // 复制日志按钮（重命名为 logCopyButton）
+    self.logCopyButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.logCopyButton.frame = CGRectMake(48 + buttonWidth * 2, buttonTop, buttonWidth, 44);
+    [self.logCopyButton setTitle:@"复制日志" forState:UIControlStateNormal];
+    self.logCopyButton.backgroundColor = [UIColor colorWithRed:0.1 green:0.46 blue:0.82 alpha:1];
+    [self.logCopyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.logCopyButton.layer.cornerRadius = 8;
+    [self.logCopyButton addTarget:self action:@selector(copyLog) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.logCopyButton];
 }
 
 - (void)startDiagnosis {

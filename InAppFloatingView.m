@@ -222,7 +222,20 @@ static NSString *_savedDefaultUrl = nil;
 
 // 获取最顶层的ViewController
 + (UIViewController *)topViewController {
-    UIWindow *window = _currentWindow ?: [UIApplication sharedApplication].keyWindow;
+    UIWindow *window = _currentWindow;
+    if (!window) {
+        if (@available(iOS 13.0, *)) {
+            for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+                if (scene.activationState == UISceneActivationStateForegroundActive && [scene isKindOfClass:[UIWindowScene class]]) {
+                    UIWindowScene *ws = (UIWindowScene *)scene;
+                    window = ws.windows.firstObject;
+                    if (window) break;
+                }
+            }
+        } else {
+            window = [UIApplication sharedApplication].keyWindow;
+        }
+    }
     UIViewController *rootVC = window.rootViewController;
     
     while (rootVC.presentedViewController) {
