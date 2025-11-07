@@ -1,0 +1,62 @@
+name: Build iOS Network Diagnosis SDK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build SDK
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Show Xcode version
+      run: xcodebuild -version
+    
+    - name: Build SDK
+      run: |
+        chmod +x build.sh
+        ./build.sh
+    
+    - name: List build artifacts
+      run: |
+        echo "=== Build artifacts ==="
+        ls -lh build/
+        echo ""
+        echo "=== Device library info ==="
+        file build/device/libNetworkDiagnosisSDK.a
+        lipo -info build/device/libNetworkDiagnosisSDK.a
+        echo ""
+        echo "=== Simulator library info ==="
+        file build/simulator/libNetworkDiagnosisSDK.a
+        lipo -info build/simulator/libNetworkDiagnosisSDK.a
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: iOS-NetworkDiagnosisSDK
+        path: |
+          build/NetworkDiagnosisSDK.xcframework
+          build/*.h
+          build/device/libNetworkDiagnosisSDK.a
+          build/simulator/libNetworkDiagnosisSDK.a
+        retention-days: 30
+    
+    - name: Create Release (on tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          build/device/libNetworkDiagnosisSDK.a
+          build/simulator/libNetworkDiagnosisSDK.a
+          build/*.h
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

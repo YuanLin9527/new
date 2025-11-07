@@ -1,0 +1,255 @@
+//
+//  InAppFloatingView.m
+//  游戏内悬浮窗实现
+//
+
+#import "InAppFloatingView.h"
+#import "DiagnosisViewController.h"
+
+@interface FloatingButton : UIView
+@property (nonatomic, strong) UILabel *diagnosisLabel;
+@property (nonatomic, strong) UIButton *closeButton;
+@property (nonatomic, copy) void(^onDiagnosisClick)(void);
+@property (nonatomic, copy) void(^onCloseClick)(void);
+@end
+
+@implementation FloatingButton {
+    CGPoint _initialCenter;
+    CGPoint _initialTouchPoint;
+    BOOL _isDragging;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupUI];
+    }
+    return self;
+}
+
+- (void)setupUI {
+    // 主诊断按钮
+    self.diagnosisLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 45)];
+    self.diagnosisLabel.text = @"诊断";
+    self.diagnosisLabel.textColor = [UIColor whiteColor];
+    self.diagnosisLabel.font = [UIFont boldSystemFontOfSize:18];
+    self.diagnosisLabel.textAlignment = NSTextAlignmentCenter;
+    self.diagnosisLabel.backgroundColor = [UIColor colorWithRed:0.5 green:0.2 blue:0.8 alpha:0.9]; // 紫色
+    self.diagnosisLabel.layer.cornerRadius = 8;
+    self.diagnosisLabel.layer.masksToBounds = YES;
+    self.diagnosisLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.diagnosisLabel.layer.shadowOffset = CGSizeMake(0, 2);
+    self.diagnosisLabel.layer.shadowOpacity = 0.3;
+    self.diagnosisLabel.layer.shadowRadius = 4;
+    self.diagnosisLabel.userInteractionEnabled = YES;
+    [self addSubview:self.diagnosisLabel];
+    
+    // 关闭按钮（右上角小X）
+    self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.closeButton.frame = CGRectMake(78, -8, 20, 20);
+    [self.closeButton setTitle:@"×" forState:UIControlStateNormal];
+    [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.closeButton.backgroundColor = [UIColor redColor];
+    self.closeButton.layer.cornerRadius = 10;
+    self.closeButton.layer.masksToBounds = YES;
+    [self.closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.closeButton];
+    
+    // 添加拖动手势
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    [self addGestureRecognizer:pan];
+    
+    // 添加点击手势
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.diagnosisLabel addGestureRecognizer:tap];
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)gesture {
+    UIView *superview = self.superview;
+    if (!superview) return;
+    
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        _initialCenter = self.center;
+        _isDragging = NO;
+    }
+    else if (gesture.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gesture translationInView:superview];
+        
+        // 如果移动距离超过阈值，标记为拖动
+        if (fabs(translation.x) > 10 || fabs(translation.y) > 10) {
+            _isDragging = YES;
+        }
+        
+        CGPoint newCenter = CGPointMake(_initialCenter.x + translation.x,
+                                       _initialCenter.y + translation.y);
+        
+        // 限制在父视图范围内
+        CGFloat minX = self.bounds.size.width / 2;
+        CGFloat maxX = superview.bounds.size.width - self.bounds.size.width / 2;
+        CGFloat minY = self.bounds.size.height / 2 + 20; // 避开状态栏
+        CGFloat maxY = superview.bounds.size.height - self.bounds.size.height / 2;
+        
+        newCenter.x = MAX(minX, MIN(newCenter.x, maxX));
+        newCenter.y = MAX(minY, MIN(newCenter.y, maxY));
+        
+        self.center = newCenter;
+    }
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)gesture {
+    if (!_isDragging && self.onDiagnosisClick) {
+        self.onDiagnosisClick();
+    }
+    _isDragging = NO;
+}
+
+- (void)closeButtonTapped {
+    if (self.onCloseClick) {
+        self.onCloseClick();
+    }
+}
+
+@end
+
+// ========================================
+
+@implementation InAppFloatingView
+
+static FloatingButton *_floatingButton = nil;
+static UIWindow *_currentWindow = nil;
+static NSString *_savedJsonData = nil;
+static NSString *_savedDefaultUrl = nil;
+
++ (void)showInWindow:(UIWindow *)window 
+            jsonData:(NSString *)jsonData 
+          defaultUrl:(NSString *)defaultUrl {
+    
+    if (_floatingButton) {
+        [self hide];
+    }
+    
+    _currentWindow = window;
+    _savedJsonData = jsonData;
+    _savedDefaultUrl = defaultUrl;
+    
+    // 创建悬浮按钮
+    _floatingButton = [[FloatingButton alloc] initWithFrame:CGRectMake(100, 100, 90, 45)];
+    
+    // 点击诊断按钮
+    __weak typeof(self) weakSelf = self;
+    _floatingButton.onDiagnosisClick = ^{
+        [weakSelf showDiagnosisDialog];
+    };
+    
+    // 点击关闭按钮
+    _floatingButton.onCloseClick = ^{
+        [weakSelf hide];
+    };
+    
+    [window addSubview:_floatingButton];
+}
+
++ (void)hide {
+    if (_floatingButton) {
+        [_floatingButton removeFromSuperview];
+        _floatingButton = nil;
+    }
+}
+
++ (void)restore {
+    if (_currentWindow && _savedJsonData && _savedDefaultUrl) {
+        [self showInWindow:_currentWindow jsonData:_savedJsonData defaultUrl:_savedDefaultUrl];
+    }
+}
+
++ (BOOL)isShowing {
+    return _floatingButton != nil;
+}
+
+// 显示输入对话框
++ (void)showDiagnosisDialog {
+    [self hide]; // 先隐藏悬浮窗
+    
+    UIViewController *rootVC = [self topViewController];
+    if (!rootVC) return;
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"网络诊断"
+                                                                   message:@"请输入要诊断的网址:"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"请输入诊断地址(URL)";
+        textField.text = _savedDefaultUrl ?: @"http://list-new.dhsf.xqhuyu.com/modlist/modlist_143319_ios.txt";
+        textField.keyboardType = UIKeyboardTypeURL;
+        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    }];
+    
+    // 开始诊断
+    UIAlertAction *startAction = [UIAlertAction actionWithTitle:@"开始诊断"
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+        UITextField *textField = alert.textFields.firstObject;
+        NSString *url = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (url.length == 0) {
+            [self showAlert:@"提示" message:@"请输入有效的网址"];
+            return;
+        }
+        
+        // 打开诊断页面
+        DiagnosisViewController *diagnosisVC = [[DiagnosisViewController alloc] init];
+        diagnosisVC.diagnosisUrl = url;
+        diagnosisVC.jsonData = _savedJsonData;
+        diagnosisVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        
+        [rootVC presentViewController:diagnosisVC animated:YES completion:nil];
+    }];
+    
+    // 取消
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+        [self restore]; // 恢复悬浮窗
+    }];
+    
+    [alert addAction:startAction];
+    [alert addAction:cancelAction];
+    
+    [rootVC presentViewController:alert animated:YES completion:nil];
+}
+
+// 获取最顶层的ViewController
++ (UIViewController *)topViewController {
+    UIWindow *window = _currentWindow ?: [UIApplication sharedApplication].keyWindow;
+    UIViewController *rootVC = window.rootViewController;
+    
+    while (rootVC.presentedViewController) {
+        rootVC = rootVC.presentedViewController;
+    }
+    
+    if ([rootVC isKindOfClass:[UINavigationController class]]) {
+        return [(UINavigationController *)rootVC visibleViewController];
+    }
+    if ([rootVC isKindOfClass:[UITabBarController class]]) {
+        return [(UITabBarController *)rootVC selectedViewController];
+    }
+    
+    return rootVC;
+}
+
+// 显示简单提示
++ (void)showAlert:(NSString *)title message:(NSString *)message {
+    UIViewController *topVC = [self topViewController];
+    if (!topVC) return;
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [topVC presentViewController:alert animated:YES completion:nil];
+}
+
+@end
+
