@@ -1,0 +1,449 @@
+2025-11-07 16:25:07.634644+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x126b403f0; frame = (0 0; 270 24); gestureRecognizers = <NSArray: 0x28348e400>; layer = <CALayer: 0x2838ab120>>
+2025-11-07 16:25:07.636835+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x126b43fd0; frame = (0 30.6667; 270 30.6667); gestureRecognizers = <NSArray: 0x28348af40>; layer = <CALayer: 0x28397c520>>
+2025-11-07 16:25:08.087571+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7cb90 h=-&- v=-&- UITransitionView:0x1209493b0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7c6e0 h=-&- v=-&- V:[UITransitionView:0x1209493b0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b4fb10 _UIKeyboardLayoutAlignmentView:0x10571b9f0.bottom == UITransitionView:0x1209493b0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b407d0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x10571c1f0.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45ef0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b45130 V:|-(0)-[UIView:0x10571a940]   (active, names: '|':UITransitionView:0x1209493b0 )>",
+    "<NSLayoutConstraint:0x281b44960 UIView:0x10571a940.bottom == _UIKeyboardLayoutAlignmentView:0x10571b9f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b461c0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x10571a940.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b7c190 UIView:0x10571c1f0.top == _UIAlertControllerInterfaceActionGroupView:0x10571c3a0.top   (active)>",
+    "<NSLayoutConstraint:0x281b7c0f0 V:[_UIAlertControllerInterfaceActionGroupView:0x10571c3a0]-(0)-|   (active, names: '|':UIView:0x10571c1f0 )>",
+    "<NSLayoutConstraint:0x281b4f9d0 _UIKeyboardLayoutAlignmentView:0x10571b9f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b44dc0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x10571a940 )>",
+    "<NSLayoutConstraint:0x281b451d0 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x10571a940 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b7c190 UIView:0x10571c1f0.top == _UIAlertControllerInterfaceActionGroupView:0x10571c3a0.top   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:08.090863+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7cb90 h=-&- v=-&- UITransitionView:0x1209493b0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7c6e0 h=-&- v=-&- V:[UITransitionView:0x1209493b0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b4fb10 _UIKeyboardLayoutAlignmentView:0x10571b9f0.bottom == UITransitionView:0x1209493b0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b407d0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x10571c1f0.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45ef0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b45130 V:|-(0)-[UIView:0x10571a940]   (active, names: '|':UITransitionView:0x1209493b0 )>",
+    "<NSLayoutConstraint:0x281b44960 UIView:0x10571a940.bottom == _UIKeyboardLayoutAlignmentView:0x10571b9f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b461c0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x10571a940.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b4f9d0 _UIKeyboardLayoutAlignmentView:0x10571b9f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b44dc0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x10571a940 )>",
+    "<NSLayoutConstraint:0x281b451d0 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x10571a940 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b44dc0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x10571a940 )>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:08.092352+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7cb90 h=-&- v=-&- UITransitionView:0x1209493b0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7c6e0 h=-&- v=-&- V:[UITransitionView:0x1209493b0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b4fb10 _UIKeyboardLayoutAlignmentView:0x10571b9f0.bottom == UITransitionView:0x1209493b0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b40050 UIView:0x10571c1f0.height >= 44   (active)>",
+    "<NSLayoutConstraint:0x281b407d0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x10571c1f0.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45130 V:|-(0)-[UIView:0x10571a940]   (active, names: '|':UITransitionView:0x1209493b0 )>",
+    "<NSLayoutConstraint:0x281b44960 UIView:0x10571a940.bottom == _UIKeyboardLayoutAlignmentView:0x10571b9f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b461c0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x10571a940.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b4f9d0 _UIKeyboardLayoutAlignmentView:0x10571b9f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b46170 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x10571a940.top + 8   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b40050 UIView:0x10571c1f0.height >= 44   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:08.093871+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7cb90 h=-&- v=-&- UITransitionView:0x1209493b0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7c6e0 h=-&- v=-&- V:[UITransitionView:0x1209493b0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b4fb10 _UIKeyboardLayoutAlignmentView:0x10571b9f0.bottom == UITransitionView:0x1209493b0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b407d0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x10571c1f0.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45130 V:|-(0)-[UIView:0x10571a940]   (active, names: '|':UITransitionView:0x1209493b0 )>",
+    "<NSLayoutConstraint:0x281b44960 UIView:0x10571a940.bottom == _UIKeyboardLayoutAlignmentView:0x10571b9f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b46170 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x10571a940.top + 8   (active)>",
+    "<NSLayoutConstraint:0x281b461c0 _UIAlertControllerPhoneTVMacView:0x107018e00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x10571a940.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b4f9d0 _UIKeyboardLayoutAlignmentView:0x10571b9f0.height == 209   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+
+<NSLayoutConstraint:0x281b407d0 _UIAlertControllerPhoneTVMacView:0x107018e00'网络诊断'.height == UIView:0x10571c1f0.height + 180   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:11.618906+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x126b49fd0; frame = (0 0; 270 24); gestureRecognizers = <NSArray: 0x2834b8780>; layer = <CALayer: 0x283919d00>>
+2025-11-07 16:25:11.620662+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x126b4e240; frame = (0 30.6667; 270 30.6667); gestureRecognizers = <NSArray: 0x2834b9e90>; layer = <CALayer: 0x28391bf40>>
+2025-11-07 16:25:12.069384+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7ad00 h=-&- v=-&- UITransitionView:0x120952b40.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7a850 h=-&- v=-&- V:[UITransitionView:0x120952b40]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78690 _UIKeyboardLayoutAlignmentView:0x10551a180.bottom == UITransitionView:0x120952b40.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b74190 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x105519680.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b794f0 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b792c0 V:|-(0)-[UIView:0x105518ed0]   (active, names: '|':UITransitionView:0x120952b40 )>",
+    "<NSLayoutConstraint:0x281b78d70 UIView:0x105518ed0.bottom == _UIKeyboardLayoutAlignmentView:0x10551a180.top   (active)>",
+    "<NSLayoutConstraint:0x281b79590 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x105518ed0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b7a300 UIView:0x105519680.top == _UIAlertControllerInterfaceActionGroupView:0x105519080.top   (active)>",
+    "<NSLayoutConstraint:0x281b7a260 V:[_UIAlertControllerInterfaceActionGroupView:0x105519080]-(0)-|   (active, names: '|':UIView:0x105519680 )>",
+    "<NSLayoutConstraint:0x281b78140 _UIKeyboardLayoutAlignmentView:0x10551a180.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b79400 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x105518ed0 )>",
+    "<NSLayoutConstraint:0x281b79360 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x105518ed0 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b7a300 UIView:0x105519680.top == _UIAlertControllerInterfaceActionGroupView:0x105519080.top   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:12.070665+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7ad00 h=-&- v=-&- UITransitionView:0x120952b40.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7a850 h=-&- v=-&- V:[UITransitionView:0x120952b40]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78690 _UIKeyboardLayoutAlignmentView:0x10551a180.bottom == UITransitionView:0x120952b40.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b74190 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x105519680.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b794f0 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b792c0 V:|-(0)-[UIView:0x105518ed0]   (active, names: '|':UITransitionView:0x120952b40 )>",
+    "<NSLayoutConstraint:0x281b78d70 UIView:0x105518ed0.bottom == _UIKeyboardLayoutAlignmentView:0x10551a180.top   (active)>",
+    "<NSLayoutConstraint:0x281b79590 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x105518ed0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78140 _UIKeyboardLayoutAlignmentView:0x10551a180.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b79400 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x105518ed0 )>",
+    "<NSLayoutConstraint:0x281b79360 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x105518ed0 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b79400 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x105518ed0 )>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:12.072376+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7ad00 h=-&- v=-&- UITransitionView:0x120952b40.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7a850 h=-&- v=-&- V:[UITransitionView:0x120952b40]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78690 _UIKeyboardLayoutAlignmentView:0x10551a180.bottom == UITransitionView:0x120952b40.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b4ed00 UIView:0x105519680.height >= 44   (active)>",
+    "<NSLayoutConstraint:0x281b74190 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x105519680.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b792c0 V:|-(0)-[UIView:0x105518ed0]   (active, names: '|':UITransitionView:0x120952b40 )>",
+    "<NSLayoutConstraint:0x281b78d70 UIView:0x105518ed0.bottom == _UIKeyboardLayoutAlignmentView:0x10551a180.top   (active)>",
+    "<NSLayoutConstraint:0x281b79590 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x105518ed0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78140 _UIKeyboardLayoutAlignmentView:0x10551a180.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b79540 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x105518ed0.top + 8   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b4ed00 UIView:0x105519680.height >= 44   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:12.073814+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7ad00 h=-&- v=-&- UITransitionView:0x120952b40.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b7a850 h=-&- v=-&- V:[UITransitionView:0x120952b40]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78690 _UIKeyboardLayoutAlignmentView:0x10551a180.bottom == UITransitionView:0x120952b40.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b74190 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x105519680.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b792c0 V:|-(0)-[UIView:0x105518ed0]   (active, names: '|':UITransitionView:0x120952b40 )>",
+    "<NSLayoutConstraint:0x281b78d70 UIView:0x105518ed0.bottom == _UIKeyboardLayoutAlignmentView:0x10551a180.top   (active)>",
+    "<NSLayoutConstraint:0x281b79540 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x105518ed0.top + 8   (active)>",
+    "<NSLayoutConstraint:0x281b79590 _UIAlertControllerPhoneTVMacView:0x10601d600'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x105518ed0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78140 _UIKeyboardLayoutAlignmentView:0x10551a180.height == 209   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+
+<NSLayoutConstraint:0x281b74190 _UIAlertControllerPhoneTVMacView:0x10601d600'网络诊断'.height == UIView:0x105519680.height + 180   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+D/AudioEngine-inl.mm (172): UIApplicationWillResignActiveNotification
+2025-11-07 16:25:19.398517+0800 FGCQLibClient-mobile[34642:11609476] [Snapshotting] Snapshotting a view (0x1031d8600, UIKeyboardImpl) that is not in a visible window requires afterScreenUpdates:YES.
+2025-11-07 16:25:19.671931+0800 FGCQLibClient-mobile[34642:11609476] [EventDispatcher] Found no UIEvent for backing event of type: 11; contextId: 0x490E8593
+2025-11-07 16:25:44.623988+0800 FGCQLibClient-mobile[34642:11610834] [ServicesDaemonManager] interruptionHandler is called. -[FontServicesDaemonManager connection]_block_invoke
+2025-11-07 16:25:44.639083+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] serverTimeUrl1:http://server.zqdjy.cn/server_time?time=1762503944&sign=42f77f5641a2e69a83e8ed788e377e46
+D/AudioEngine-inl.mm (182): UIApplicationDidBecomeActiveNotification
+2025-11-07 16:25:44.813560+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] Http Request Code:200
+2025-11-07 16:25:44.813775+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] time:
+2025-11-07 16:25:44.813837+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] 1762503944
+2025-11-07 16:25:47.109414+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x1021e4c70; frame = (0 0; 270 24); gestureRecognizers = <NSArray: 0x28362b120>; layer = <CALayer: 0x28390ee20>>
+2025-11-07 16:25:47.110997+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x1021e0b20; frame = (0 30.6667; 270 30.6667); gestureRecognizers = <NSArray: 0x283631ec0>; layer = <CALayer: 0x28390e960>>
+2025-11-07 16:25:47.627287+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b78960 h=-&- v=-&- UITransitionView:0x1025521c0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b79c70 h=-&- v=-&- V:[UITransitionView:0x1025521c0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78b40 _UIKeyboardLayoutAlignmentView:0x12095f2f0.bottom == UITransitionView:0x1025521c0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b73d40 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x126b1ec10.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b48b90 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b45ea0 V:|-(0)-[UIView:0x120937070]   (active, names: '|':UITransitionView:0x1025521c0 )>",
+    "<NSLayoutConstraint:0x281b450e0 UIView:0x120937070.bottom == _UIKeyboardLayoutAlignmentView:0x12095f2f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b492c0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x120937070.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b50730 UIView:0x126b1ec10.top == _UIAlertControllerInterfaceActionGroupView:0x126b30980.top   (active)>",
+    "<NSLayoutConstraint:0x281b50780 V:[_UIAlertControllerInterfaceActionGroupView:0x126b30980]-(0)-|   (active, names: '|':UIView:0x126b1ec10 )>",
+    "<NSLayoutConstraint:0x281b78ff0 _UIKeyboardLayoutAlignmentView:0x12095f2f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b45f90 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x120937070 )>",
+    "<NSLayoutConstraint:0x281b44a50 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x120937070 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b50730 UIView:0x126b1ec10.top == _UIAlertControllerInterfaceActionGroupView:0x126b30980.top   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:47.628693+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b78960 h=-&- v=-&- UITransitionView:0x1025521c0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b79c70 h=-&- v=-&- V:[UITransitionView:0x1025521c0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78b40 _UIKeyboardLayoutAlignmentView:0x12095f2f0.bottom == UITransitionView:0x1025521c0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b73d40 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x126b1ec10.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b48b90 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b45ea0 V:|-(0)-[UIView:0x120937070]   (active, names: '|':UITransitionView:0x1025521c0 )>",
+    "<NSLayoutConstraint:0x281b450e0 UIView:0x120937070.bottom == _UIKeyboardLayoutAlignmentView:0x12095f2f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b492c0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x120937070.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78ff0 _UIKeyboardLayoutAlignmentView:0x12095f2f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b45f90 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x120937070 )>",
+    "<NSLayoutConstraint:0x281b44a50 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x120937070 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b45f90 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801f80e0'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x120937070 )>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:47.630137+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b78960 h=-&- v=-&- UITransitionView:0x1025521c0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b79c70 h=-&- v=-&- V:[UITransitionView:0x1025521c0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78b40 _UIKeyboardLayoutAlignmentView:0x12095f2f0.bottom == UITransitionView:0x1025521c0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b73340 UIView:0x126b1ec10.height >= 44   (active)>",
+    "<NSLayoutConstraint:0x281b73d40 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x126b1ec10.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45ea0 V:|-(0)-[UIView:0x120937070]   (active, names: '|':UITransitionView:0x1025521c0 )>",
+    "<NSLayoutConstraint:0x281b450e0 UIView:0x120937070.bottom == _UIKeyboardLayoutAlignmentView:0x12095f2f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b492c0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x120937070.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78ff0 _UIKeyboardLayoutAlignmentView:0x12095f2f0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b48dc0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x120937070.top + 8   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b73340 UIView:0x126b1ec10.height >= 44   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:47.631653+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281b78960 h=-&- v=-&- UITransitionView:0x1025521c0.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281b79c70 h=-&- v=-&- V:[UITransitionView:0x1025521c0]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b78b40 _UIKeyboardLayoutAlignmentView:0x12095f2f0.bottom == UITransitionView:0x1025521c0.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b73d40 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x126b1ec10.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b45ea0 V:|-(0)-[UIView:0x120937070]   (active, names: '|':UITransitionView:0x1025521c0 )>",
+    "<NSLayoutConstraint:0x281b450e0 UIView:0x120937070.bottom == _UIKeyboardLayoutAlignmentView:0x12095f2f0.top   (active)>",
+    "<NSLayoutConstraint:0x281b48dc0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x120937070.top + 8   (active)>",
+    "<NSLayoutConstraint:0x281b492c0 _UIAlertControllerPhoneTVMacView:0x102b77a00'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x120937070.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b78ff0 _UIKeyboardLayoutAlignmentView:0x12095f2f0.height == 209   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+
+<NSLayoutConstraint:0x281b73d40 _UIAlertControllerPhoneTVMacView:0x102b77a00'网络诊断'.height == UIView:0x126b1ec10.height + 180   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:25:50.435842+0800 FGCQLibClient-mobile[34642:11610834] [SDK] pingHost 开始，host=www.baidu.com, count=5
+2025-11-07 16:25:52.411630+0800 FGCQLibClient-mobile[34642:11609476] didOrientationChanged, 1
+2025-11-07 16:25:52.413683+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] onDeviceRotationChanged 1111:{"deviceRotation":1}
+2025-11-07 16:25:52.413886+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] onDeviceRotationChanged, deviceRotation:1
+2025-11-07 16:25:52.413960+0800 FGCQLibClient-mobile[34642:11609476] deviceRotationNotify currentDevice 1
+2025-11-07 16:25:52.414012+0800 FGCQLibClient-mobile[34642:11609476] deviceRotationNotify {
+    deviceRotation = 1;
+}
+2025-11-07 16:26:00.031051+0800 FGCQLibClient-mobile[34642:11609476] didOrientationChanged, 5
+2025-11-07 16:26:00.031356+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] onDeviceRotationChanged 1111:{"deviceRotation":1}
+2025-11-07 16:26:00.031545+0800 FGCQLibClient-mobile[34642:11609476] [LUA-print] onDeviceRotationChanged, deviceRotation:1
+2025-11-07 16:26:00.031647+0800 FGCQLibClient-mobile[34642:11609476] deviceRotationNotify currentDevice 5
+2025-11-07 16:26:00.031766+0800 FGCQLibClient-mobile[34642:11609476] deviceRotationNotify {
+    deviceRotation = 1;
+}
+2025-11-07 16:26:03.544372+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x12099db70; frame = (0 0; 270 24); gestureRecognizers = <NSArray: 0x2834551a0>; layer = <CALayer: 0x283947e00>>
+2025-11-07 16:26:03.546428+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Changing the translatesAutoresizingMaskIntoConstraints property of a UICollectionViewCell that is managed by a UICollectionView is not supported, and will result in incorrect self-sizing. View: <_UIAlertControllerTextFieldViewCollectionCell: 0x1209a1110; frame = (0 30.6667; 270 30.6667); gestureRecognizers = <NSArray: 0x283458480>; layer = <CALayer: 0x28394f220>>
+2025-11-07 16:26:03.995520+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281bc4190 h=-&- v=-&- UITransitionView:0x10272a590.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bbc2d0 h=-&- v=-&- V:[UITransitionView:0x10272a590]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b75c70 _UIKeyboardLayoutAlignmentView:0x1027059e0.bottom == UITransitionView:0x10272a590.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b931b0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x102720a50.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b830c0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b80f50 V:|-(0)-[UIView:0x102705fe0]   (active, names: '|':UITransitionView:0x10272a590 )>",
+    "<NSLayoutConstraint:0x281b81ea0 UIView:0x102705fe0.bottom == _UIKeyboardLayoutAlignmentView:0x1027059e0.top   (active)>",
+    "<NSLayoutConstraint:0x281b815e0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x102705fe0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281bc2df0 UIView:0x102720a50.top == _UIAlertControllerInterfaceActionGroupView:0x102720c00.top   (active)>",
+    "<NSLayoutConstraint:0x281bc33e0 V:[_UIAlertControllerInterfaceActionGroupView:0x102720c00]-(0)-|   (active, names: '|':UIView:0x102720a50 )>",
+    "<NSLayoutConstraint:0x281b753b0 _UIKeyboardLayoutAlignmentView:0x1027059e0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b809b0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x102705fe0 )>",
+    "<NSLayoutConstraint:0x281b81fe0 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x102705fe0 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281bc2df0 UIView:0x102720a50.top == _UIAlertControllerInterfaceActionGroupView:0x102720c00.top   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:26:03.997210+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281bc4190 h=-&- v=-&- UITransitionView:0x10272a590.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bbc2d0 h=-&- v=-&- V:[UITransitionView:0x10272a590]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b75c70 _UIKeyboardLayoutAlignmentView:0x1027059e0.bottom == UITransitionView:0x10272a590.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b931b0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x102720a50.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b830c0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.centerY == UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide'.centerY   (active)>",
+    "<NSLayoutConstraint:0x281b80f50 V:|-(0)-[UIView:0x102705fe0]   (active, names: '|':UITransitionView:0x10272a590 )>",
+    "<NSLayoutConstraint:0x281b81ea0 UIView:0x102705fe0.bottom == _UIKeyboardLayoutAlignmentView:0x1027059e0.top   (active)>",
+    "<NSLayoutConstraint:0x281b815e0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x102705fe0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b753b0 _UIKeyboardLayoutAlignmentView:0x1027059e0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b809b0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x102705fe0 )>",
+    "<NSLayoutConstraint:0x281b81fe0 'UIViewSafeAreaLayoutGuide-top' V:|-(0)-[UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide']   (active, names: '|':UIView:0x102705fe0 )>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281b809b0 'UIViewSafeAreaLayoutGuide-bottom' V:[UILayoutGuide:0x2801fe760'UIViewSafeAreaLayoutGuide']-(0)-|   (active, names: '|':UIView:0x102705fe0 )>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:26:03.998251+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281bc4190 h=-&- v=-&- UITransitionView:0x10272a590.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bbc2d0 h=-&- v=-&- V:[UITransitionView:0x10272a590]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b75c70 _UIKeyboardLayoutAlignmentView:0x1027059e0.bottom == UITransitionView:0x10272a590.bottom   (active)>",
+    "<NSLayoutConstraint:0x281bfc1e0 UIView:0x102720a50.height >= 44   (active)>",
+    "<NSLayoutConstraint:0x281b931b0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x102720a50.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b80f50 V:|-(0)-[UIView:0x102705fe0]   (active, names: '|':UITransitionView:0x10272a590 )>",
+    "<NSLayoutConstraint:0x281b81ea0 UIView:0x102705fe0.bottom == _UIKeyboardLayoutAlignmentView:0x1027059e0.top   (active)>",
+    "<NSLayoutConstraint:0x281b815e0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x102705fe0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b753b0 _UIKeyboardLayoutAlignmentView:0x1027059e0.height == 209   (active)>",
+    "<NSLayoutConstraint:0x281b81c70 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x102705fe0.top + 8   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+<NSLayoutConstraint:0x281bfc1e0 UIView:0x102720a50.height >= 44   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+2025-11-07 16:26:03.999442+0800 FGCQLibClient-mobile[34642:11609476] [LayoutConstraints] Unable to simultaneously satisfy constraints.
+	Probably at least one of the constraints in the following list is one you don't want. 
+	Try this: 
+		(1) look at each constraint and try to figure out which you don't expect; 
+		(2) find the code that added the unwanted constraint or constraints and fix it. 
+	(Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints) 
+(
+    "<NSAutoresizingMaskLayoutConstraint:0x281bc4190 h=-&- v=-&- UITransitionView:0x10272a590.minY == 0   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bbc2d0 h=-&- v=-&- V:[UITransitionView:0x10272a590]-(0)-|   (active, names: '|':UIWindow:0x102507e20 )>",
+    "<NSAutoresizingMaskLayoutConstraint:0x281bf8b40 h=--- v=--- UIWindow:0x102507e20.height == 375   (active)>",
+    "<NSLayoutConstraint:0x281b75c70 _UIKeyboardLayoutAlignmentView:0x1027059e0.bottom == UITransitionView:0x10272a590.bottom   (active)>",
+    "<NSLayoutConstraint:0x281b931b0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.height == UIView:0x102720a50.height + 180   (active)>",
+    "<NSLayoutConstraint:0x281b80f50 V:|-(0)-[UIView:0x102705fe0]   (active, names: '|':UITransitionView:0x10272a590 )>",
+    "<NSLayoutConstraint:0x281b81ea0 UIView:0x102705fe0.bottom == _UIKeyboardLayoutAlignmentView:0x1027059e0.top   (active)>",
+    "<NSLayoutConstraint:0x281b81c70 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.top >= UIView:0x102705fe0.top + 8   (active)>",
+    "<NSLayoutConstraint:0x281b815e0 _UIAlertControllerPhoneTVMacView:0x105826800'\U7f51\U7edc\U8bca\U65ad'.bottom <= UIView:0x102705fe0.bottom - 21   (active)>",
+    "<NSLayoutConstraint:0x281b753b0 _UIKeyboardLayoutAlignmentView:0x1027059e0.height == 209   (active)>"
+)
+
+Will attempt to recover by breaking constraint 
+
+<NSLayoutConstraint:0x281b931b0 _UIAlertControllerPhoneTVMacView:0x105826800'网络诊断'.height == UIView:0x102720a50.height + 180   (active)>
+
+Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKitCore/UIView.h> may also be helpful.
+D/AudioEngine-inl.mm (172): UIApplicationWillResignActiveNotification

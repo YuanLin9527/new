@@ -61,6 +61,7 @@
 
 - (void)pingHost:(NSString *)host count:(NSInteger)count callback:(NetworkDiagnosisCallback)callback {
     NSLog(@"[SDK] pingHost 开始，host=%@, count=%ld", host, (long)count);
+    NSLog(@"[SDK] callback=%p, diagnosisQueue=%p", callback, self.diagnosisQueue);
     
     if (!host || host.length == 0) {
         NSLog(@"[SDK] pingHost 错误：主机地址为空");
@@ -74,7 +75,10 @@
     
     self.shouldCancel = NO;
     
+    NSLog(@"[SDK] 准备执行 dispatch_async 到 diagnosisQueue");
+    
     dispatch_async(self.diagnosisQueue, ^{
+        NSLog(@"[SDK] ✅ 进入 dispatch_async 块");
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Ping %@ =====\n", host];
         
