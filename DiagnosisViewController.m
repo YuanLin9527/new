@@ -22,12 +22,26 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    // 强制关闭键盘（防止从输入对话框带过来的键盘状态）
+    [self.view endEditing:YES];
+    
     [self setupUI];
     
     // 如果有URL，自动开始诊断
     if (self.diagnosisUrl && self.diagnosisUrl.length > 0) {
         [self performSelector:@selector(startDiagnosis) withObject:nil afterDelay:0.3];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // 再次确保键盘关闭（在界面出现后立即执行）
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view endEditing:YES];
+        [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    });
 }
 
 - (void)viewWillLayoutSubviews {
