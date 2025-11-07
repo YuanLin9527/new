@@ -44,14 +44,14 @@
     self.diagnosisLabel.userInteractionEnabled = YES;
     [self addSubview:self.diagnosisLabel];
     
-    // 关闭按钮（右上角小X）
+    // 关闭按钮（右上角X，增大到30x30）
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.closeButton.frame = CGRectMake(78, -8, 20, 20);
+    self.closeButton.frame = CGRectMake(72, -12, 30, 30);
     [self.closeButton setTitle:@"×" forState:UIControlStateNormal];
     [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
     self.closeButton.backgroundColor = [UIColor redColor];
-    self.closeButton.layer.cornerRadius = 10;
+    self.closeButton.layer.cornerRadius = 15;
     self.closeButton.layer.masksToBounds = YES;
     [self.closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.closeButton];
@@ -167,7 +167,7 @@ static NSString *_savedDefaultUrl = nil;
     return _floatingButton != nil;
 }
 
-// 显示输入对话框
+// 显示输入对话框（改为IP+端口两个输入框）
 + (void)showDiagnosisDialog {
     [self hide]; // 先隐藏悬浮窗
     
@@ -175,32 +175,55 @@ static NSString *_savedDefaultUrl = nil;
     if (!rootVC) return;
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"网络诊断"
-                                                                   message:@"请输入要诊断的网址:"
+                                                                   message:@"请输入IP地址和端口号:"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
+    // 第一个输入框：IP地址
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"请输入诊断地址(URL)";
-        textField.text = _savedDefaultUrl ?: @"http://list-new.dhsf.xqhuyu.com/modlist/modlist_143319_ios.txt";
+        textField.placeholder = @"IP地址或域名";
+        textField.text = _savedDefaultUrl ?: @"www.baidu.com";
         textField.keyboardType = UIKeyboardTypeURL;
         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    }];
+    
+    // 第二个输入框：端口号
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"端口号 (默认80)";
+        textField.text = @"80";
+        textField.keyboardType = UIKeyboardTypeNumberPad;
     }];
     
     // 开始诊断
     UIAlertAction *startAction = [UIAlertAction actionWithTitle:@"开始诊断"
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action) {
-        UITextField *textField = alert.textFields.firstObject;
-        NSString *url = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        UITextField *ipField = alert.textFields[0];
+        UITextField *portField = alert.textFields[1];
         
-        if (url.length == 0) {
-            [self showAlert:@"提示" message:@"请输入有效的网址"];
+        NSString *host = [ipField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *portStr = [portField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (host.length == 0) {
+            [self showAlert:@"提示" message:@"请输入有效的IP地址或域名"];
+            [self restore];
             return;
+        }
+        
+        // 端口号默认80
+        NSInteger port = 80;
+        if (portStr.length > 0) {
+            port = [portStr integerValue];
+            if (port <= 0 || port > 65535) {
+                [self showAlert:@"提示" message:@"端口号范围: 1-65535"];
+                [self restore];
+                return;
+            }
         }
         
         // 打开诊断页面
         DiagnosisViewController *diagnosisVC = [[DiagnosisViewController alloc] init];
-        diagnosisVC.diagnosisUrl = url;
+        diagnosisVC.diagnosisUrl = [NSString stringWithFormat:@"%@:%ld", host, (long)port];
         diagnosisVC.jsonData = _savedJsonData;
         diagnosisVC.modalPresentationStyle = UIModalPresentationFullScreen;
         

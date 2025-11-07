@@ -26,8 +26,38 @@
     
     // 如果有URL，自动开始诊断
     if (self.diagnosisUrl && self.diagnosisUrl.length > 0) {
-        [self performSelector:@selector(startDiagnosis) withObject:nil afterDelay:0.5];
+        [self performSelector:@selector(startDiagnosis) withObject:nil afterDelay:0.3];
     }
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    // 屏幕旋转时重新布局
+    [self updateLayoutForOrientation];
+}
+
+- (void)updateLayoutForOrientation {
+    CGFloat width = self.view.bounds.size.width;
+    CGFloat height = self.view.bounds.size.height;
+    
+    // 标题
+    UILabel *titleLabel = (UILabel *)[self.view viewWithTag:1001];
+    if (titleLabel) {
+        titleLabel.frame = CGRectMake(0, 40, width, 44);
+    }
+    
+    // 日志区域
+    CGFloat logTop = 90;
+    CGFloat logBottom = height - 80;
+    self.logTextView.frame = CGRectMake(16, logTop, width - 32, logBottom - logTop);
+    
+    // 按钮区域
+    CGFloat buttonTop = height - 70;
+    CGFloat buttonWidth = (width - 64) / 3;
+    
+    self.startButton.frame = CGRectMake(16, buttonTop, buttonWidth, 44);
+    self.closeButton.frame = CGRectMake(32 + buttonWidth, buttonTop, buttonWidth, 44);
+    self.logCopyButton.frame = CGRectMake(48 + buttonWidth * 2, buttonTop, buttonWidth, 44);
 }
 
 - (void)setupUI {
@@ -36,6 +66,8 @@
     titleLabel.text = @"🔧 网络诊断调试面板";
     titleLabel.font = [UIFont boldSystemFontOfSize:18];
     titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.tag = 1001;  // 用于旋转时查找
+    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:titleLabel];
     
     // 日志显示区域
@@ -52,6 +84,7 @@
     self.logTextView.layer.borderWidth = 1;
     self.logTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.logTextView.text = @"等待诊断启动...";
+    self.logTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.logTextView];
     
     // 按钮区域
@@ -112,16 +145,12 @@
         [self log:[NSString stringWithFormat:@"收到游戏数据: %@", self.jsonData]];
     }
     
-    NSString *url = self.diagnosisUrl ?: @"http://list-new.dhsf.xqhuyu.com/modlist/modlist_143319_ios.txt";
+    NSString *url = self.diagnosisUrl ?: @"www.baidu.com:80";
     [self log:[NSString stringWithFormat:@"诊断目标: %@\n", url]];
     
-    // 提取主机名
+    // 提取主机名和端口
     NSString *host = [self extractHost:url];
-    NSInteger port = 80; // 默认端口
-    
-    if ([url containsString:@"https"]) {
-        port = 443;
-    }
+    NSInteger port = [self extractPort:url];
     
     // 执行完整诊断
     NetworkDiagnosisSDK *sdk = [NetworkDiagnosisSDK sharedInstance];
@@ -186,13 +215,31 @@
         host = [host substringToIndex:slashRange.location];
     }
     
-    // 移除端口
-    NSRange colonRange = [host rangeOfString:@":"];
-    if (colonRange.location != NSNotFound) {
-        host = [host substringToIndex:colonRange.location];
-    }
+    // 保留端口（不移除）
+    // 移除端口的代码已删除，现在保留 host:port 格式
     
     return host;
+}
+
+- (NSInteger)extractPort:(NSString *)urlString {
+    if (!urlString || urlString.length == 0) return 80;
+    
+    // 提取端口号
+    NSRange colonRange = [urlString rangeOfString:@":"];
+    if (colonRange.location != NSNotFound) {
+        NSString *portStr = [urlString substringFromIndex:colonRange.location + 1];
+        NSInteger port = [portStr integerValue];
+        if (port > 0 && port <= 65535) {
+            return port;
+        }
+    }
+    
+    // 根据协议判断默认端口
+    if ([urlString hasPrefix:@"https"]) {
+        return 443;
+    }
+    
+    return 80;
 }
 
 - (void)showAlert:(NSString *)title message:(NSString *)message {
