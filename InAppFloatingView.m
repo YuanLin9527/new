@@ -79,6 +79,36 @@
     // 添加点击手势
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.diagnosisLabel addGestureRecognizer:tap];
+    
+    // 确保悬浮窗初始位置不在屏幕边缘
+    [self adjustPositionToSafeArea];
+}
+
+// 调整位置到安全区域
+- (void)adjustPositionToSafeArea {
+    UIView *superview = self.superview;
+    if (!superview) return;
+    
+    // 获取安全区域边距
+    UIEdgeInsets safeInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeInsets = superview.safeAreaInsets;
+    }
+    
+    CGFloat safeMargin = 10;
+    CGFloat minY = MAX(self.bounds.size.height / 2 + 44, self.bounds.size.height / 2 + safeInsets.top + safeMargin);
+    CGFloat bottomSafeArea = MAX(80, safeInsets.bottom + 50);
+    CGFloat maxY = superview.bounds.size.height - self.bounds.size.height / 2 - bottomSafeArea;
+    
+    // 如果当前位置在不安全区域，调整到安全区域
+    CGPoint currentCenter = self.center;
+    if (currentCenter.y < minY) {
+        currentCenter.y = minY + 20;  // 再往下一点
+        self.center = currentCenter;
+    } else if (currentCenter.y > maxY) {
+        currentCenter.y = maxY - 20;  // 往上移一点
+        self.center = currentCenter;
+    }
 }
 
 - (void)handlePan:(UIPanGestureRecognizer *)gesture {
@@ -100,11 +130,23 @@
         CGPoint newCenter = CGPointMake(_initialCenter.x + translation.x,
                                        _initialCenter.y + translation.y);
         
-        // 限制在父视图范围内
-        CGFloat minX = self.bounds.size.width / 2;
-        CGFloat maxX = superview.bounds.size.width - self.bounds.size.width / 2;
-        CGFloat minY = self.bounds.size.height / 2 + 20; // 避开状态栏
-        CGFloat maxY = superview.bounds.size.height - self.bounds.size.height / 2;
+        // 获取安全区域边距（支持刘海屏和Home Indicator）
+        UIEdgeInsets safeInsets = UIEdgeInsetsZero;
+        if (@available(iOS 11.0, *)) {
+            safeInsets = superview.safeAreaInsets;
+        }
+        
+        // 限制在父视图范围内，留出更大的安全边距
+        CGFloat safeMargin = 10;  // 额外安全边距
+        CGFloat minX = self.bounds.size.width / 2 + safeMargin;
+        CGFloat maxX = superview.bounds.size.width - self.bounds.size.width / 2 - safeMargin;
+        
+        // 顶部：避开状态栏和刘海（44pt起始）
+        CGFloat minY = MAX(self.bounds.size.height / 2 + 44, self.bounds.size.height / 2 + safeInsets.top + safeMargin);
+        
+        // 底部：避开Home Indicator（至少留出80pt，足够覆盖34pt的Home Indicator区域）
+        CGFloat bottomSafeArea = MAX(80, safeInsets.bottom + 50);
+        CGFloat maxY = superview.bounds.size.height - self.bounds.size.height / 2 - bottomSafeArea;
         
         newCenter.x = MAX(minX, MIN(newCenter.x, maxX));
         newCenter.y = MAX(minY, MIN(newCenter.y, maxY));
@@ -171,8 +213,22 @@ static NSString *_savedDefaultUrl = nil;
     _savedJsonData = jsonData;
     _savedDefaultUrl = defaultUrl;
     
-    // 创建悬浮按钮
-    _floatingButton = [[FloatingButton alloc] initWithFrame:CGRectMake(100, 100, 90, 45)];
+    // 获取安全区域边距（支持刘海屏和Home Indicator）
+    UIEdgeInsets safeInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeInsets = window.safeAreaInsets;
+    }
+    
+    // 计算安全的初始位置
+    // 初始Y：屏幕高度的30%位置（更靠上，避开底部Home Indicator）
+    CGFloat initialY = window.bounds.size.height * 0.3;
+    // 确保不在底部危险区域（至少距离底部100pt）
+    CGFloat minSafeY = 60;  // 距离顶部最小距离
+    CGFloat maxSafeY = window.bounds.size.height - 120;  // 距离底部至少120pt
+    initialY = MAX(minSafeY, MIN(initialY, maxSafeY));
+    
+    // 创建悬浮按钮（右侧，安全位置）
+    _floatingButton = [[FloatingButton alloc] initWithFrame:CGRectMake(window.bounds.size.width - 110, initialY, 90, 45)];
     
     // 点击诊断按钮
     __weak typeof(self) weakSelf = self;
