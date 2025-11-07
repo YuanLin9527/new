@@ -21,8 +21,25 @@ jobs:
     
     - name: Build SDK
       run: |
-        chmod +x build.sh
-        ./build.sh
+        # 编译真机版本
+        xcrun -sdk iphoneos clang -arch arm64 \
+          -fembed-bitcode \
+          -c NetworkDiagnosisSDK.m InAppFloatingView.m DiagnosisViewController.m DeviceInfo.m \
+          -fobjc-arc \
+          -fmodules \
+          -Os
+        
+        # 创建输出目录
+        mkdir -p build/device
+        
+        # 生成真机静态库
+        ar rcs build/device/libNetworkDiagnosisSDK.a \
+          NetworkDiagnosisSDK.o InAppFloatingView.o DiagnosisViewController.o DeviceInfo.o
+        
+        # 复制头文件
+        cp *.h build/
+        
+        echo "✅ 真机版本编译完成"
     
     - name: List build artifacts
       run: |
@@ -32,20 +49,14 @@ jobs:
         echo "=== Device library info ==="
         file build/device/libNetworkDiagnosisSDK.a
         lipo -info build/device/libNetworkDiagnosisSDK.a
-        echo ""
-        echo "=== Simulator library info ==="
-        file build/simulator/libNetworkDiagnosisSDK.a
-        lipo -info build/simulator/libNetworkDiagnosisSDK.a
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: iOS-NetworkDiagnosisSDK
         path: |
-          build/NetworkDiagnosisSDK.xcframework
           build/*.h
           build/device/libNetworkDiagnosisSDK.a
-          build/simulator/libNetworkDiagnosisSDK.a
         retention-days: 30
     
     - name: Create Release (on tag)
