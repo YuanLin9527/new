@@ -21,32 +21,16 @@ jobs:
     
     - name: Build SDK
       run: |
-        # 编译真机版本
-        xcrun -sdk iphoneos clang -arch arm64 \
-          -fembed-bitcode \
-          -c NetworkDiagnosisSDK.m InAppFloatingView.m DiagnosisViewController.m DeviceInfo.m \
-          -fobjc-arc \
-          -fmodules \
-          -Os
-        
-        # 创建输出目录
+        xcrun -sdk iphoneos clang -arch arm64 -fembed-bitcode -c NetworkDiagnosisSDK.m InAppFloatingView.m DiagnosisViewController.m DeviceInfo.m -fobjc-arc -fmodules -Os
         mkdir -p build/device
-        
-        # 生成真机静态库
-        ar rcs build/device/libNetworkDiagnosisSDK.a \
-          NetworkDiagnosisSDK.o InAppFloatingView.o DiagnosisViewController.o DeviceInfo.o
-        
-        # 复制头文件
+        ar rcs build/device/libNetworkDiagnosisSDK.a NetworkDiagnosisSDK.o InAppFloatingView.o DiagnosisViewController.o DeviceInfo.o
         cp *.h build/
-        
-        echo "✅ 真机版本编译完成"
+        echo "Build completed"
     
     - name: List build artifacts
       run: |
         echo "=== Build artifacts ==="
         ls -lh build/
-        echo ""
-        echo "=== Device library info ==="
         file build/device/libNetworkDiagnosisSDK.a
         lipo -info build/device/libNetworkDiagnosisSDK.a
     
@@ -58,16 +42,3 @@ jobs:
           build/*.h
           build/device/libNetworkDiagnosisSDK.a
         retention-days: 30
-    
-    - name: Create Release (on tag)
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          build/device/libNetworkDiagnosisSDK.a
-          build/simulator/libNetworkDiagnosisSDK.a
-          build/*.h
-        generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
