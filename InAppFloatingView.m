@@ -277,12 +277,14 @@ static NSString *_savedDefaultUrl = nil;
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     // 第一个输入框：IP地址
+    __block UITextField *ipTextField = nil;
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"IP地址或域名";
         textField.text = _savedDefaultUrl ?: @"www.baidu.com";
         textField.keyboardType = UIKeyboardTypeURL;
         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        ipTextField = textField;
     }];
     
     // 第二个输入框：端口号
@@ -338,8 +340,15 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 显示对话框（移除约束调整，系统会自动处理）
-    [rootVC presentViewController:alert animated:YES completion:nil];
+    // 显示对话框
+    [rootVC presentViewController:alert animated:YES completion:^{
+        // 延迟0.1秒后，让输入框失去焦点，避免自动弹出键盘
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (ipTextField) {
+                [ipTextField resignFirstResponder];  // 让输入框失去焦点
+            }
+        });
+    }];
 }
 
 // 获取最顶层的ViewController

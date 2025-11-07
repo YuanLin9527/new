@@ -60,8 +60,12 @@
 }
 
 - (void)pingHost:(NSString *)host count:(NSInteger)count callback:(NetworkDiagnosisCallback)callback {
-    NSLog(@"[SDK] pingHost 开始，host=%@, count=%ld, 当前线程:%@", host, (long)count, [NSThread currentThread]);
-    NSLog(@"[SDK] callback=%p, diagnosisQueue=%p", callback, self.diagnosisQueue);
+    NSLog(@"[SDK] ========== pingHost 开始 ==========");
+    NSLog(@"[SDK] host=%@, count=%ld", host, (long)count);
+    NSLog(@"[SDK] 当前线程:%@", [NSThread currentThread]);
+    NSLog(@"[SDK] 是否主线程:%@", [NSThread isMainThread] ? @"YES" : @"NO");
+    NSLog(@"[SDK] callback=%p", callback);
+    NSLog(@"[SDK] diagnosisQueue=%p", self.diagnosisQueue);
     NSLog(@"[SDK] self=%p", self);
     
     if (!host || host.length == 0) {
@@ -76,19 +80,33 @@
     
     self.shouldCancel = NO;
     
-    NSLog(@"[SDK] 准备执行 dispatch_async 到 diagnosisQueue");
-    
     // 强引用self，避免被释放
     __weak typeof(self) weakSelf = self;
     
-    dispatch_async(self.diagnosisQueue, ^{
+    NSLog(@"[SDK] ========== 准备执行 dispatch_async ==========");
+    NSLog(@"[SDK] 目标队列: %p", self.diagnosisQueue);
+    
+    // 尝试使用dispatch_get_global_queue作为备选
+    dispatch_queue_t queue = self.diagnosisQueue;
+    if (!queue) {
+        NSLog(@"[SDK] ⚠️ diagnosisQueue为空！使用全局队列");
+        queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    }
+    
+    NSLog(@"[SDK] 即将调用 dispatch_async...");
+    
+    dispatch_async(queue, ^{
+        NSLog(@"[SDK] ========== ✅ 进入 dispatch_async 块 ==========");
+        NSLog(@"[SDK] 执行线程:%@", [NSThread currentThread]);
+        
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) {
             NSLog(@"[SDK] ❌ self已被释放！");
             return;
         }
         
-        NSLog(@"[SDK] ✅ 进入 dispatch_async 块, 线程:%@", [NSThread currentThread]);
+        NSLog(@"[SDK] strongSelf=%p", strongSelf);
+        
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Ping %@ =====\n", host];
         
