@@ -22,10 +22,6 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    // 强制关闭键盘（防止从输入对话框带过来的键盘状态）
-    [self.view endEditing:YES];
-    
     [self setupUI];
     
     // 如果有URL，自动开始诊断
@@ -34,14 +30,49 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // 在即将显示时就关闭键盘
+    [self dismissKeyboardForcefully];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    // 再次确保键盘关闭（在界面出现后立即执行）
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.view endEditing:YES];
-        [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    // 界面显示后再次强制关闭键盘
+    [self dismissKeyboardForcefully];
+    
+    // 延迟再次关闭（保险）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self dismissKeyboardForcefully];
     });
+}
+
+// 强制关闭键盘的方法
+- (void)dismissKeyboardForcefully {
+    // 方法1：结束当前view的编辑
+    [self.view endEditing:YES];
+    
+    // 方法2：让所有window结束编辑
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
+        [window endEditing:YES];
+    }
+    
+    // 方法3：隐藏键盘（iOS 13+）
+    if (@available(iOS 13.0, *)) {
+        for (UIScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if ([scene isKindOfClass:[UIWindowScene class]]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                for (UIWindow *window in windowScene.windows) {
+                    [window endEditing:YES];
+                }
+            }
+        }
+    }
+    
+    // 方法4：让第一响应者辞职
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
 
 - (void)viewWillLayoutSubviews {

@@ -266,6 +266,9 @@
     dispatch_async(queue, ^{
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Traceroute %@ =====\n", host];
+        [result appendString:@"⚠️ iOS系统限制：非越狱应用无ICMP权限\n"];
+        [result appendString:@"如全部超时属正常现象（Android无此限制）\n"];
+        [result appendString:@"--------------------------------------------\n"];
         
         if (progressCallback) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -284,7 +287,7 @@
             return;
         }
         
-            [result appendFormat:@"目标IP: %@\n", targetIP];
+        [result appendFormat:@"目标IP: %@\n", targetIP];
         [result appendString:@"跳数\t\tIP地址\t\t\t延迟\n"];
         [result appendString:@"--------------------------------------------\n"];
         

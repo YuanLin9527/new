@@ -339,18 +339,23 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 在显示前就确保没有任何输入框获得焦点
-    // 方法1：显示对话框
+    // 显示对话框，并在完成后强力关闭键盘
     [rootVC presentViewController:alert animated:YES completion:^{
-        // 方法2：立即结束编辑（在显示完成后）
+        // 方法1：直接结束编辑
         [alert.view endEditing:YES];
         
-        // 方法3：强制让所有textField失焦
+        // 方法2：遍历所有文本框，取消第一响应者
         for (UITextField *textField in alert.textFields) {
-            if ([textField isFirstResponder]) {
+            [textField resignFirstResponder];
+        }
+        
+        // 方法3：延迟再次关闭（防止系统延迟弹出）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [alert.view endEditing:YES];
+            for (UITextField *textField in alert.textFields) {
                 [textField resignFirstResponder];
             }
-        }
+        });
     }];
 }
 
