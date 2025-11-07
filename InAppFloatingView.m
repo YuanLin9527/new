@@ -276,15 +276,14 @@ static NSString *_savedDefaultUrl = nil;
                                                                    message:@"请输入IP地址和端口号:"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    // 第一个输入框：IP地址
-    __block UITextField *ipTextField = nil;
+    // 第一个输入框：IP地址（禁用自动编辑）
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"IP地址或域名";
         textField.text = _savedDefaultUrl ?: @"www.baidu.com";
         textField.keyboardType = UIKeyboardTypeURL;
         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        ipTextField = textField;
+        textField.enablesReturnKeyAutomatically = NO;
     }];
     
     // 第二个输入框：端口号
@@ -340,11 +339,18 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 显示对话框，completion时直接让输入框失焦（避免闪烁）
+    // 在显示前就确保没有任何输入框获得焦点
+    // 方法1：显示对话框
     [rootVC presentViewController:alert animated:YES completion:^{
-        // 立即让输入框失去焦点，避免自动弹出键盘
-        // 不需要延迟，直接执行避免闪烁
+        // 方法2：立即结束编辑（在显示完成后）
         [alert.view endEditing:YES];
+        
+        // 方法3：强制让所有textField失焦
+        for (UITextField *textField in alert.textFields) {
+            if ([textField isFirstResponder]) {
+                [textField resignFirstResponder];
+            }
+        }
     }];
 }
 

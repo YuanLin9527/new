@@ -485,7 +485,9 @@
     self.shouldCancel = NO;
     NSMutableString *fullResult = [NSMutableString string];
     
-    dispatch_async(self.diagnosisQueue, ^{
+    // 使用全局队列（与ping保持一致）
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
         [fullResult appendFormat:@"========== 完整网络诊断 ==========\n"];
         [fullResult appendFormat:@"目标主机: %@\n", host];
         [fullResult appendFormat:@"目标端口: %ld\n", (long)port];
@@ -521,20 +523,26 @@
         
         // 步骤2: Traceroute测试
         if (!self.shouldCancel) {
+            NSLog(@"[SDK] 开始Traceroute测试...");
             __block NSString *traceResult = nil;
+            
+            // 为Traceroute创建新的semaphore
+            dispatch_semaphore_t traceSemaphore = dispatch_semaphore_create(0);
             
             [self tracerouteHost:host 
                 progressCallback:^(NSString *progress) {
+                    NSLog(@"[SDK] Traceroute进度: %@", progress);
                     if (progressCallback) {
                         progressCallback(progress);
                     }
                 }
                 completionCallback:^(NSString *result) {
+                    NSLog(@"[SDK] Traceroute完成");
                     traceResult = result;
-                    dispatch_semaphore_signal(semaphore);
+                    dispatch_semaphore_signal(traceSemaphore);
                 }];
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_wait(traceSemaphore, DISPATCH_TIME_FOREVER);
             
             if (!self.shouldCancel) {
                 [fullResult appendString:traceResult];
@@ -544,14 +552,19 @@
         
         // 步骤3: Telnet测试
         if (!self.shouldCancel) {
+            NSLog(@"[SDK] 开始Telnet测试...");
             __block NSString *telnetResult = nil;
             
+            // 为Telnet创建新的semaphore
+            dispatch_semaphore_t telnetSemaphore = dispatch_semaphore_create(0);
+            
             [self telnetHost:host port:port callback:^(NSString *result) {
+                NSLog(@"[SDK] Telnet完成");
                 telnetResult = result;
-                dispatch_semaphore_signal(semaphore);
+                dispatch_semaphore_signal(telnetSemaphore);
             }];
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_wait(telnetSemaphore, DISPATCH_TIME_FOREVER);
             
             if (!self.shouldCancel) {
                 [fullResult appendString:telnetResult];
