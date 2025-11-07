@@ -215,8 +215,11 @@
         host = [host substringToIndex:slashRange.location];
     }
     
-    // 保留端口（不移除）
-    // 移除端口的代码已删除，现在保留 host:port 格式
+    // 移除端口号（只返回纯主机名）
+    NSRange colonRange = [host rangeOfString:@":"];
+    if (colonRange.location != NSNotFound) {
+        host = [host substringToIndex:colonRange.location];
+    }
     
     return host;
 }
