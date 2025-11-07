@@ -44,26 +44,33 @@
     self.diagnosisLabel.userInteractionEnabled = YES;
     [self addSubview:self.diagnosisLabel];
     
-    // 关闭按钮（右上角X，增大到36x36，扩大触摸区域）
+    // 关闭按钮（右上角X，增大到40x40，最大化触摸区域）
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.closeButton.frame = CGRectMake(70, -14, 36, 36);
+    self.closeButton.frame = CGRectMake(68, -16, 40, 40);  // 更大的按钮
     [self.closeButton setTitle:@"×" forState:UIControlStateNormal];
     [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];  // 高亮时也是白色
-    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:22];
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:24];
     self.closeButton.backgroundColor = [UIColor redColor];
-    self.closeButton.layer.cornerRadius = 18;
-    self.closeButton.layer.masksToBounds = YES;
+    self.closeButton.layer.cornerRadius = 20;
+    self.closeButton.layer.masksToBounds = NO;  // 改为NO，让触摸区域不受裁剪限制
+    self.closeButton.clipsToBounds = NO;
     
     // 设置高亮时的背景色（深红色）
     [self.closeButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1]] 
                                 forState:UIControlStateHighlighted];
     
     // 扩大触摸区域（让点击更容易触发）
-    self.closeButton.contentEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10);
+    self.closeButton.contentEdgeInsets = UIEdgeInsetsMake(-15, -15, -15, -15);
+    
+    // 确保按钮在最上层
+    self.closeButton.layer.zPosition = 1000;
     
     [self.closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.closeButton];
+    
+    // 禁用clipsToBounds以允许按钮超出边界
+    self.clipsToBounds = NO;
     
     // 添加拖动手势
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
@@ -271,7 +278,19 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    [rootVC presentViewController:alert animated:YES completion:nil];
+    // 显示对话框
+    [rootVC presentViewController:alert animated:YES completion:^{
+        // 调整对话框高度，确保两个输入框都能完整显示
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (alert.view.constraints.count > 0) {
+                for (NSLayoutConstraint *constraint in alert.view.constraints) {
+                    if (constraint.firstAttribute == NSLayoutAttributeHeight) {
+                        constraint.constant = MAX(constraint.constant, 180);  // 最小高度180
+                    }
+                }
+            }
+        });
+    }];
 }
 
 // 获取最顶层的ViewController

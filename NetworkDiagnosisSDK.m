@@ -60,9 +60,14 @@
 }
 
 - (void)pingHost:(NSString *)host count:(NSInteger)count callback:(NetworkDiagnosisCallback)callback {
+    NSLog(@"[SDK] pingHost 开始，host=%@, count=%ld", host, (long)count);
+    
     if (!host || host.length == 0) {
+        NSLog(@"[SDK] pingHost 错误：主机地址为空");
         if (callback) {
-            callback(@"错误: 主机地址不能为空");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                callback(@"错误: 主机地址不能为空");
+            });
         }
         return;
     }
@@ -73,16 +78,20 @@
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Ping %@ =====\n", host];
         
+        NSLog(@"[SDK] 开始DNS解析：%@", host);
+        
         // 解析主机地址
         NSString *ipAddress = [self resolveHost:host];
         if (!ipAddress) {
-            [result appendString:@"DNS解析失败\n"];
+            NSLog(@"[SDK] DNS解析失败：%@", host);
+            [result appendFormat:@"DNS解析失败: %@\n", host];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (callback) callback(result);
             });
             return;
         }
         
+        NSLog(@"[SDK] DNS解析成功：%@ -> %@", host, ipAddress);
         [result appendFormat:@"目标IP: %@\n\n", ipAddress];
         
         NSInteger successCount = 0;
@@ -97,7 +106,9 @@
                 break;
             }
             
+            NSLog(@"[SDK] 执行第%ld次ping...", (long)(i + 1));
             double pingTime = [self executePing:ipAddress];
+            NSLog(@"[SDK] 第%ld次ping结果: %.2f", (long)(i + 1), pingTime);
             
             if (pingTime >= 0) {
                 [result appendFormat:@"第%ld次: %@, time=%.2f ms\n", 
@@ -119,6 +130,8 @@
             }
         }
         
+        NSLog(@"[SDK] Ping完成，成功:%ld 失败:%ld", (long)successCount, (long)failCount);
+        
         [result appendString:@"\n----- 统计信息 -----\n"];
         [result appendFormat:@"发送: %ld, 成功: %ld, 失败: %ld\n", 
             (long)count, (long)successCount, (long)failCount];
@@ -131,8 +144,13 @@
         
         [result appendFormat:@"丢包率: %.1f%%\n", (failCount * 100.0 / count)];
         
+        NSLog(@"[SDK] 准备回调Ping结果，长度:%lu", (unsigned long)result.length);
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (callback) callback(result);
+            NSLog(@"[SDK] 执行Ping回调");
+            if (callback) {
+                callback(result);
+                NSLog(@"[SDK] Ping回调完成");
+            }
         });
     });
 }
