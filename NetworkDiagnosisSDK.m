@@ -13,8 +13,8 @@
 #include <netinet/ip_icmp.h>
 
 #define SDK_VERSION @"1.0.0"
-#define MAX_HOPS 30
-#define TIMEOUT_SECONDS 5
+#define MAX_HOPS 15          // 最大跳数（原30，减少到15以加快速度）
+#define TIMEOUT_SECONDS 2    // 每跳超时秒数（原5秒，减少到2秒）
 
 @interface NetworkDiagnosisSDK ()
 @property (nonatomic, strong) dispatch_queue_t diagnosisQueue;
