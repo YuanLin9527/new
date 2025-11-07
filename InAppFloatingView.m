@@ -44,27 +44,31 @@
     self.diagnosisLabel.userInteractionEnabled = YES;
     [self addSubview:self.diagnosisLabel];
     
-    // 关闭按钮（右上角X，增大到40x40，最大化触摸区域）
+    // 关闭按钮（改为跟"诊断"按钮相同样式，红色半透明）
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.closeButton.frame = CGRectMake(68, -16, 40, 40);  // 更大的按钮
-    [self.closeButton setTitle:@"×" forState:UIControlStateNormal];
+    self.closeButton.frame = CGRectMake(self.bounds.size.width - 42, -5, 40, 20);  // 右上角，与诊断按钮同样大小比例
+    [self.closeButton setTitle:@"关闭" forState:UIControlStateNormal];
     [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];  // 高亮时也是白色
-    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:24];
-    self.closeButton.backgroundColor = [UIColor redColor];
-    self.closeButton.layer.cornerRadius = 20;
-    self.closeButton.layer.masksToBounds = NO;  // 改为NO，让触摸区域不受裁剪限制
-    self.closeButton.clipsToBounds = NO;
+    [self.closeButton setTitleColor:[UIColor colorWithWhite:0.9 alpha:1.0] forState:UIControlStateHighlighted];
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:13];
     
-    // 设置高亮时的背景色（深红色）
-    [self.closeButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1]] 
+    // 红色半透明背景（跟诊断按钮同样风格）
+    self.closeButton.backgroundColor = [UIColor colorWithRed:0.9 green:0.2 blue:0.2 alpha:0.75];
+    self.closeButton.layer.cornerRadius = 8;  // 圆角跟诊断按钮一样
+    self.closeButton.layer.masksToBounds = YES;
+    
+    // 添加阴影效果（跟诊断按钮一致）
+    self.closeButton.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.closeButton.layer.shadowOffset = CGSizeMake(0, 2);
+    self.closeButton.layer.shadowOpacity = 0.3;
+    self.closeButton.layer.shadowRadius = 4;
+    
+    // 设置高亮时的背景色（更深的红色）
+    [self.closeButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.8 green:0.15 blue:0.15 alpha:0.9]] 
                                 forState:UIControlStateHighlighted];
     
-    // 扩大触摸区域（让点击更容易触发）
-    self.closeButton.contentEdgeInsets = UIEdgeInsetsMake(-15, -15, -15, -15);
-    
-    // 确保按钮在最上层
-    self.closeButton.layer.zPosition = 1000;
+    // 扩大触摸区域
+    self.closeButton.contentEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10);
     
     [self.closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.closeButton];
@@ -334,19 +338,8 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 显示对话框
-    [rootVC presentViewController:alert animated:YES completion:^{
-        // 调整对话框高度，确保两个输入框都能完整显示
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (alert.view.constraints.count > 0) {
-                for (NSLayoutConstraint *constraint in alert.view.constraints) {
-                    if (constraint.firstAttribute == NSLayoutAttributeHeight) {
-                        constraint.constant = MAX(constraint.constant, 180);  // 最小高度180
-                    }
-                }
-            }
-        });
-    }];
+    // 显示对话框（移除约束调整，系统会自动处理）
+    [rootVC presentViewController:alert animated:YES completion:nil];
 }
 
 // 获取最顶层的ViewController

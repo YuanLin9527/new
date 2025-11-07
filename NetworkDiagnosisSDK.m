@@ -60,8 +60,9 @@
 }
 
 - (void)pingHost:(NSString *)host count:(NSInteger)count callback:(NetworkDiagnosisCallback)callback {
-    NSLog(@"[SDK] pingHost 开始，host=%@, count=%ld", host, (long)count);
+    NSLog(@"[SDK] pingHost 开始，host=%@, count=%ld, 当前线程:%@", host, (long)count, [NSThread currentThread]);
     NSLog(@"[SDK] callback=%p, diagnosisQueue=%p", callback, self.diagnosisQueue);
+    NSLog(@"[SDK] self=%p", self);
     
     if (!host || host.length == 0) {
         NSLog(@"[SDK] pingHost 错误：主机地址为空");
@@ -77,15 +78,24 @@
     
     NSLog(@"[SDK] 准备执行 dispatch_async 到 diagnosisQueue");
     
+    // 强引用self，避免被释放
+    __weak typeof(self) weakSelf = self;
+    
     dispatch_async(self.diagnosisQueue, ^{
-        NSLog(@"[SDK] ✅ 进入 dispatch_async 块");
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) {
+            NSLog(@"[SDK] ❌ self已被释放！");
+            return;
+        }
+        
+        NSLog(@"[SDK] ✅ 进入 dispatch_async 块, 线程:%@", [NSThread currentThread]);
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Ping %@ =====\n", host];
         
         NSLog(@"[SDK] 开始DNS解析：%@", host);
         
         // 解析主机地址
-        NSString *ipAddress = [self resolveHost:host];
+        NSString *ipAddress = [strongSelf resolveHost:host];
         if (!ipAddress) {
             NSLog(@"[SDK] DNS解析失败：%@", host);
             [result appendFormat:@"DNS解析失败: %@\n", host];
@@ -105,13 +115,13 @@
         double maxTime = 0;
         
         for (NSInteger i = 0; i < count; i++) {
-            if (self.shouldCancel) {
+            if (strongSelf.shouldCancel) {
                 [result appendString:@"\n任务已取消\n"];
                 break;
             }
             
             NSLog(@"[SDK] 执行第%ld次ping...", (long)(i + 1));
-            double pingTime = [self executePing:ipAddress];
+            double pingTime = [strongSelf executePing:ipAddress];
             NSLog(@"[SDK] 第%ld次ping结果: %.2f", (long)(i + 1), pingTime);
             
             if (pingTime >= 0) {
