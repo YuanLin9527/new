@@ -14,7 +14,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Show Xcode version
       run: xcodebuild -version
@@ -38,7 +38,7 @@ jobs:
         lipo -info build/simulator/libNetworkDiagnosisSDK.a
     
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: iOS-NetworkDiagnosisSDK
         path: |
