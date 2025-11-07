@@ -44,15 +44,24 @@
     self.diagnosisLabel.userInteractionEnabled = YES;
     [self addSubview:self.diagnosisLabel];
     
-    // 关闭按钮（右上角X，增大到30x30）
+    // 关闭按钮（右上角X，增大到36x36，扩大触摸区域）
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.closeButton.frame = CGRectMake(72, -12, 30, 30);
+    self.closeButton.frame = CGRectMake(70, -14, 36, 36);
     [self.closeButton setTitle:@"×" forState:UIControlStateNormal];
     [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+    [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];  // 高亮时也是白色
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:22];
     self.closeButton.backgroundColor = [UIColor redColor];
-    self.closeButton.layer.cornerRadius = 15;
+    self.closeButton.layer.cornerRadius = 18;
     self.closeButton.layer.masksToBounds = YES;
+    
+    // 设置高亮时的背景色（深红色）
+    [self.closeButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.8 green:0 blue:0 alpha:1]] 
+                                forState:UIControlStateHighlighted];
+    
+    // 扩大触摸区域（让点击更容易触发）
+    self.closeButton.contentEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10);
+    
     [self.closeButton addTarget:self action:@selector(closeButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.closeButton];
     
@@ -95,6 +104,13 @@
         
         self.center = newCenter;
     }
+    else if (gesture.state == UIGestureRecognizerStateEnded || 
+             gesture.state == UIGestureRecognizerStateCancelled) {
+        // 手势结束时重置拖动标记
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self->_isDragging = NO;
+        });
+    }
 }
 
 - (void)handleTap:(UITapGestureRecognizer *)gesture {
@@ -105,9 +121,24 @@
 }
 
 - (void)closeButtonTapped {
+    // 移除高亮效果
+    self.closeButton.highlighted = NO;
+    
     if (self.onCloseClick) {
         self.onCloseClick();
     }
+}
+
+// 辅助方法：创建纯色图片（用于按钮背景）
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 @end
