@@ -37,7 +37,16 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _diagnosisQueue = dispatch_queue_create("com.networkdiagnosis.queue", DISPATCH_QUEUE_SERIAL);
+        // 创建并发队列，而不是串行队列
+        dispatch_queue_attr_t attr = dispatch_queue_attr_make_with_qos_class(
+            DISPATCH_QUEUE_CONCURRENT,
+            QOS_CLASS_USER_INITIATED,
+            0
+        );
+        _diagnosisQueue = dispatch_queue_create("com.networkdiagnosis.queue", attr);
+        
+        NSLog(@"[SDK] init - 创建队列成功: %p, label: %s", _diagnosisQueue, dispatch_queue_get_label(_diagnosisQueue));
+        
         _shouldCancel = NO;
     }
     return self;
@@ -94,9 +103,15 @@
     }
     
     NSLog(@"[SDK] 即将调用 dispatch_async...");
+    NSLog(@"[SDK] 队列地址: %p, 队列label: %s", queue, dispatch_queue_get_label(queue));
     
-    dispatch_async(queue, ^{
-        NSLog(@"[SDK] ========== ✅ 进入 dispatch_async 块 ==========");
+    // 测试：先用全局队列试试
+    dispatch_queue_t testQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    NSLog(@"[SDK] 测试全局队列地址: %p, label: %s", testQueue, dispatch_queue_get_label(testQueue));
+    
+    // 尝试1：使用全局队列而不是自定义队列
+    dispatch_async(testQueue, ^{
+        NSLog(@"[SDK] ========== ✅✅✅ 成功进入全局队列的 dispatch_async 块！ ==========");
         NSLog(@"[SDK] 执行线程:%@", [NSThread currentThread]);
         
         __strong typeof(weakSelf) strongSelf = weakSelf;
