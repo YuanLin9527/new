@@ -340,14 +340,11 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 显示对话框
+    // 显示对话框，completion时直接让输入框失焦（避免闪烁）
     [rootVC presentViewController:alert animated:YES completion:^{
-        // 延迟0.1秒后，让输入框失去焦点，避免自动弹出键盘
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (ipTextField) {
-                [ipTextField resignFirstResponder];  // 让输入框失去焦点
-            }
-        });
+        // 立即让输入框失去焦点，避免自动弹出键盘
+        // 不需要延迟，直接执行避免闪烁
+        [alert.view endEditing:YES];
     }];
 }
 

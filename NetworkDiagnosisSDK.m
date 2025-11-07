@@ -261,7 +261,9 @@
     
     self.shouldCancel = NO;
     
-    dispatch_async(self.diagnosisQueue, ^{
+    // 使用全局队列（与ping保持一致）
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Traceroute %@ =====\n", host];
         
@@ -391,7 +393,9 @@
     
     self.shouldCancel = NO;
     
-    dispatch_async(self.diagnosisQueue, ^{
+    // 使用全局队列（与ping保持一致）
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Telnet %@:%ld =====\n", host, (long)port];
         
