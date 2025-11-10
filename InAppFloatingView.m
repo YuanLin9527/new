@@ -276,7 +276,7 @@ static NSString *_savedDefaultUrl = nil;
                                                                    message:@"请输入IP地址和端口号:"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    // 第一个输入框：IP地址（禁用自动编辑）
+    // 第一个输入框：IP地址（禁用自动编辑和键盘）
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"IP地址或域名";
         textField.text = _savedDefaultUrl ?: @"www.baidu.com";
@@ -284,13 +284,23 @@ static NSString *_savedDefaultUrl = nil;
         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
         textField.enablesReturnKeyAutomatically = NO;
+        // 禁止自动获取焦点
+        textField.enabled = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            textField.enabled = YES;
+        });
     }];
     
-    // 第二个输入框：端口号
+    // 第二个输入框：端口号（禁用自动编辑和键盘）
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"端口号 (默认80)";
         textField.text = @"80";
         textField.keyboardType = UIKeyboardTypeNumberPad;
+        // 禁止自动获取焦点
+        textField.enabled = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            textField.enabled = YES;
+        });
     }];
     
     // 开始诊断
@@ -339,22 +349,30 @@ static NSString *_savedDefaultUrl = nil;
     [alert addAction:startAction];
     [alert addAction:cancelAction];
     
-    // 显示对话框，并在完成后强力关闭键盘
+    // 显示对话框前先关闭所有键盘
+    [rootVC.view endEditing:YES];
+    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    
+    // 显示对话框
     [rootVC presentViewController:alert animated:YES completion:^{
-        // 方法1：直接结束编辑
+        // 立即关闭键盘
         [alert.view endEditing:YES];
-        
-        // 方法2：遍历所有文本框，取消第一响应者
         for (UITextField *textField in alert.textFields) {
             [textField resignFirstResponder];
         }
         
-        // 方法3：延迟再次关闭（防止系统延迟弹出）
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 延迟100ms再次关闭（防止系统延迟弹出）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [alert.view endEditing:YES];
             for (UITextField *textField in alert.textFields) {
                 [textField resignFirstResponder];
             }
+        });
+        
+        // 延迟200ms第三次关闭（终极保险）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [alert.view endEditing:YES];
+            [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
         });
     }];
 }
