@@ -128,9 +128,9 @@
         
         NSLog(@"[SDK] 开始DNS解析：%@", host);
         
-        // 解析主机地址
-        NSString *ipAddress = [strongSelf resolveHost:host];
-        if (!ipAddress) {
+        // 获取所有解析到的IP地址（像Android一样显示）
+        NSArray<NSString *> *allIPs = [strongSelf resolveAllHostIPs:host];
+        if (allIPs.count == 0) {
             NSLog(@"[SDK] DNS解析失败：%@", host);
             [result appendFormat:@"DNS解析失败: %@\n", host];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -139,8 +139,16 @@
             return;
         }
         
-        NSLog(@"[SDK] DNS解析成功：%@ -> %@", host, ipAddress);
-        [result appendFormat:@"目标IP: %@\n\n", ipAddress];
+        // 显示所有解析到的IP地址
+        for (NSString *ip in allIPs) {
+            [result appendFormat:@"✅ 目标总 %@ 的 IP: %@\n", host, ip];
+            NSLog(@"[SDK] DNS解析：%@ -> %@", host, ip);
+        }
+        
+        // 使用第一个IP进行ping测试
+        NSString *ipAddress = allIPs.firstObject;
+        [result appendFormat:@"🔍 目标: %@ -> %@\n\n", host, ipAddress];
+        NSLog(@"[SDK] 开始Ping测试：%@", ipAddress);
         
         NSInteger successCount = 0;
         NSInteger failCount = 0;
