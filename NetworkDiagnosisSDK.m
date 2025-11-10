@@ -6,6 +6,7 @@
 #import "NetworkDiagnosisSDK.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
+#import <netinet/ip.h>
 #import <arpa/inet.h>
 #import <netdb.h>
 #import <unistd.h>
@@ -266,8 +267,7 @@
     dispatch_async(queue, ^{
         NSMutableString *result = [NSMutableString string];
         [result appendFormat:@"===== Traceroute %@ =====\n", host];
-        [result appendString:@"⚠️ iOS系统限制：非越狱应用无ICMP权限\n"];
-        [result appendString:@"如全部超时属正常现象（Android无此限制）\n"];
+        [result appendString:@"使用UDP+ICMP方式进行路由跟踪\n"];
         [result appendString:@"--------------------------------------------\n"];
         
         if (progressCallback) {
@@ -321,6 +321,96 @@
 }
 
 - (NSString *)traceHop:(NSString *)targetIP ttl:(int)ttl reached:(BOOL *)reached {
+    // 创建ICMP socket用于接收响应（iOS允许接收ICMP）
+    int icmpSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP);
+    if (icmpSock < 0) {
+        // 如果无法创建ICMP socket，尝试使用UDP方式
+        return [self traceHopUsingUDP:targetIP ttl:ttl reached:reached];
+    }
+    
+    // 设置接收超时
+    struct timeval timeout;
+    timeout.tv_sec = TIMEOUT_SECONDS;
+    timeout.tv_usec = 0;
+    setsockopt(icmpSock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+    
+    // 创建UDP socket用于发送
+    int udpSock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (udpSock < 0) {
+        close(icmpSock);
+        return [NSString stringWithFormat:@"%d\t\t错误: 无法创建UDP socket\n", ttl];
+    }
+    
+    // 设置TTL
+    setsockopt(udpSock, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
+    
+    // 设置UDP目标地址
+    struct sockaddr_in udpAddr;
+    memset(&udpAddr, 0, sizeof(udpAddr));
+    udpAddr.sin_family = AF_INET;
+    udpAddr.sin_port = htons(33434 + ttl); // traceroute常用端口
+    udpAddr.sin_addr.s_addr = inet_addr([targetIP UTF8String]);
+    
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+    
+    // 发送UDP包
+    char sendBuffer[64] = {0};
+    ssize_t sendResult = sendto(udpSock, sendBuffer, sizeof(sendBuffer), 0, 
+                                (struct sockaddr *)&udpAddr, sizeof(udpAddr));
+    
+    if (sendResult < 0) {
+        close(icmpSock);
+        close(udpSock);
+        return [NSString stringWithFormat:@"%d\t\t错误: 发送失败\n", ttl];
+    }
+    
+    // 尝试接收ICMP响应
+    char recvBuffer[512];
+    struct sockaddr_in from;
+    socklen_t fromlen = sizeof(from);
+    ssize_t n = recvfrom(icmpSock, recvBuffer, sizeof(recvBuffer), 0, 
+                        (struct sockaddr *)&from, &fromlen);
+    
+    gettimeofday(&end, NULL);
+    
+    close(icmpSock);
+    close(udpSock);
+    
+    double elapsed = (end.tv_sec - start.tv_sec) * 1000.0 + 
+                    (end.tv_usec - start.tv_usec) / 1000.0;
+    
+    if (n > 0) {
+        // 解析ICMP响应
+        struct ip *ipHeader = (struct ip *)recvBuffer;
+        int ipHeaderLen = ipHeader->ip_hl << 2;
+        struct icmp *icmpHeader = (struct icmp *)(recvBuffer + ipHeaderLen);
+        
+        char ipStr[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(from.sin_addr), ipStr, INET_ADDRSTRLEN);
+        NSString *hopIP = [NSString stringWithUTF8String:ipStr];
+        
+        // 检查ICMP类型
+        if (icmpHeader->icmp_type == ICMP_TIMXCEED) {
+            // TTL超时，返回中间路由器
+            return [NSString stringWithFormat:@"%d\t\t%@\t\t%.2f ms\n", ttl, hopIP, elapsed];
+        } else if (icmpHeader->icmp_type == ICMP_UNREACH) {
+            // 端口不可达，到达目标
+            *reached = YES;
+            return [NSString stringWithFormat:@"%d\t\t%@\t\t%.2f ms (目标)\n", ttl, hopIP, elapsed];
+        } else {
+            // 其他ICMP类型
+            return [NSString stringWithFormat:@"%d\t\t%@\t\t%.2f ms\n", ttl, hopIP, elapsed];
+        }
+    } else if (errno == ETIMEDOUT || errno == EAGAIN) {
+        return [NSString stringWithFormat:@"%d\t\t* * *\t\t\t超时\n", ttl];
+    } else {
+        return [NSString stringWithFormat:@"%d\t\t* * *\t\t\t不可达\n", ttl];
+    }
+}
+
+// UDP方式的traceroute（备用方案）
+- (NSString *)traceHopUsingUDP:(NSString *)targetIP ttl:(int)ttl reached:(BOOL *)reached {
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock < 0) {
         return [NSString stringWithFormat:@"%d\t\t错误: 无法创建socket\n", ttl];
@@ -338,7 +428,7 @@
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(33434 + ttl); // traceroute常用端口
+    addr.sin_port = htons(33434 + ttl);
     addr.sin_addr.s_addr = inet_addr([targetIP UTF8String]);
     
     struct timeval start, end;
@@ -364,16 +454,13 @@
         inet_ntop(AF_INET, &(from.sin_addr), ipStr, INET_ADDRSTRLEN);
         NSString *hopIP = [NSString stringWithUTF8String:ipStr];
         
-        // 检查是否到达目标
         if ([hopIP isEqualToString:targetIP] || errno == ECONNREFUSED) {
             *reached = YES;
         }
         
         return [NSString stringWithFormat:@"%d\t\t%@\t\t%.2f ms\n", ttl, hopIP, elapsed];
-    } else if (errno == ETIMEDOUT || errno == EAGAIN) {
-        return [NSString stringWithFormat:@"%d\t\t* * *\t\t\t超时\n", ttl];
     } else {
-        return [NSString stringWithFormat:@"%d\t\t* * *\t\t\t不可达\n", ttl];
+        return [NSString stringWithFormat:@"%d\t\t* * *\t\t\t超时\n", ttl];
     }
 }
 
