@@ -701,6 +701,36 @@
     return [NSString stringWithUTF8String:ip];
 }
 
+// 获取所有解析到的IP地址（像Android一样）
+- (NSArray<NSString *> *)resolveAllHostIPs:(NSString *)host {
+    NSMutableArray *allIPs = [NSMutableArray array];
+    
+    // 先检查是否已经是IP地址
+    struct in_addr addr;
+    if (inet_pton(AF_INET, [host UTF8String], &addr) == 1) {
+        [allIPs addObject:host];
+        return allIPs;
+    }
+    
+    // 进行DNS解析
+    struct hostent *remoteHostEnt = gethostbyname([host UTF8String]);
+    if (remoteHostEnt == NULL) {
+        return allIPs;
+    }
+    
+    // 遍历所有IP地址
+    for (int i = 0; remoteHostEnt->h_addr_list[i] != NULL; i++) {
+        struct in_addr *remoteInAddr = (struct in_addr *)remoteHostEnt->h_addr_list[i];
+        char *ip = inet_ntoa(*remoteInAddr);
+        NSString *ipString = [NSString stringWithUTF8String:ip];
+        if (ipString && ![allIPs containsObject:ipString]) {
+            [allIPs addObject:ipString];
+        }
+    }
+    
+    return allIPs;
+}
+
 - (NSString *)currentTimeString {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
