@@ -284,9 +284,9 @@ static NSString *_savedDefaultUrl = nil;
         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         textField.autocorrectionType = UITextAutocorrectionTypeNo;
         textField.enablesReturnKeyAutomatically = NO;
-        // 禁止自动获取焦点
+        // 禁止自动获取焦点 - 延迟0.5秒才启用
         textField.enabled = NO;
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             textField.enabled = YES;
         });
     }];
@@ -296,9 +296,9 @@ static NSString *_savedDefaultUrl = nil;
         textField.placeholder = @"端口号 (默认80)";
         textField.text = @"80";
         textField.keyboardType = UIKeyboardTypeNumberPad;
-        // 禁止自动获取焦点
+        // 禁止自动获取焦点 - 延迟0.5秒才启用
         textField.enabled = NO;
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             textField.enabled = YES;
         });
     }];
@@ -355,13 +355,13 @@ static NSString *_savedDefaultUrl = nil;
     
     // 显示对话框
     [rootVC presentViewController:alert animated:YES completion:^{
-        // 立即关闭键盘
+        // 立即关闭键盘（第1次）
         [alert.view endEditing:YES];
         for (UITextField *textField in alert.textFields) {
             [textField resignFirstResponder];
         }
         
-        // 延迟100ms再次关闭（防止系统延迟弹出）
+        // 延迟100ms第2次关闭
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [alert.view endEditing:YES];
             for (UITextField *textField in alert.textFields) {
@@ -369,8 +369,22 @@ static NSString *_savedDefaultUrl = nil;
             }
         });
         
-        // 延迟200ms第三次关闭（终极保险）
+        // 延迟200ms第3次关闭
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [alert.view endEditing:YES];
+            [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+        });
+        
+        // 延迟300ms第4次关闭（终极保险）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [alert.view endEditing:YES];
+            for (UITextField *textField in alert.textFields) {
+                [textField resignFirstResponder];
+            }
+        });
+        
+        // 延迟400ms第5次关闭（对抗UIAlertController的自动聚焦）
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [alert.view endEditing:YES];
             [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
         });
